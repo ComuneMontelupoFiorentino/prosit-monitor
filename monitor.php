@@ -7,7 +7,7 @@
  *   php monitor.php --pulizia --prova   mostra cosa farebbe la pulizia, senza toccare niente
  *   php monitor.php --pulizia --dettagli elenca ogni file trattato (altrimenti solo il riepilogo)
  *   php monitor.php --stampa        controlla e stampa il riepilogo a video
- *   php monitor.php --azzera imap   gli errori di "imap" fino ad ora non contano piu' (id = sezione di monitor.ini;
+ *   php monitor.php --azzera mail   gli errori di "mail" fino ad ora non contano piu' (id = sezione di monitor.ini;
  *                                   piu' id separati da virgola, oppure "tutti")
  *
  * Gira come prosit2 dal cron (vedi README.md). Non modifica niente fuori dai log configurati.
