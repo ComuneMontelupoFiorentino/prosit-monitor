@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="http://jelix.org/ns/module/1.0">
+    <info id="prositmonitor@montelupo" name="prositmonitor" createdate="2026-10-23">
+        <version date="2026-10-23">1.0.0</version>
+        <label lang="it_IT">Prosit - stato di script e Lizmap</label>
+        <description lang="it_IT">Riquadro nella pagina iniziale dell'Amministrazione con lo stato degli script di /usr/local/bin/prosit, degli errori di Lizmap e dei dischi (dati scritti da monitor.php).</description>
+        <license>MPL-2.0</license>
+        <creator name="Comune di Montelupo Fiorentino"/>
+    </info>
+    <dependencies>
+        <jelix minversion="1.8" maxversion="1.8.*"/>
+        <module name="master_admin"/>
+    </dependencies>
+</module>

@@ -13,8 +13,15 @@ cd /usr/local/bin/prosit/monitor && cp monitor.ini.example monitor.ini   # poi a
 mkdir -p logs && php monitor.php --stampa
 ```
 
-Il riquadro nell'Amministrazione di Lizmap richiede anche il modulo `prositmonitor`
-(vedi *Aggiornamenti di Lizmap* più sotto).
+Il riquadro nell'Amministrazione di Lizmap richiede anche il modulo `prositmonitor`,
+che si trova in `lizmap-module/prositmonitor` di questo repository:
+
+```bash
+L=/var/www/lizmap-web-client/lizmap
+cp -r lizmap-module/prositmonitor $L/lizmap-modules/
+php $L/install/configurator.php prositmonitor
+php $L/install/installer.php
+```
 
 ## Cosa controlla
 
