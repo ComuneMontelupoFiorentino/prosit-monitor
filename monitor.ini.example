@@ -59,6 +59,12 @@ nome = "ANNCSU (civici PDND)"
 log[] = "ANNCSU-PostgreSQL-PDND-sync-main/logs/*.log"
 cron = "ANNCSU-PostgreSQL-PDND-sync-main"
 
+[imap]
+nome = "Lettura caselle mail (IMAP)"
+log[] = "IMAP-extract-body-mail2pg/logs/*/*.log"
+log[] = "IMAP-extract-body-mail2pg/logs/*.log"
+cron = "IMAP-extract-body-mail2pg"
+
 [prosit]
 nome = "Prosit (API, schede, hook)"
 log[] = "/srv/data/prosit/log/*.log"
