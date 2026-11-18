@@ -1,0 +1,104 @@
+; =====================================================================================
+;  Prosit monitor - configurazione
+;  Ogni sezione (tranne [generale]) e' un controllo che compare nel cruscotto.
+;    nome           etichetta nel cruscotto
+;    log[]          file di log (percorsi relativi a "base" o assoluti; * e {a,b} ammessi)
+;    cron           testo che identifica la riga del crontab (di solito la cartella dello script):
+;                   il monitor calcola l'ultimo orario previsto e segnala se lo script non ha girato
+;    manuale = 1    script lanciato a mano: niente avviso se non e' nel crontab
+;    max_ore        (facoltativo) errore se nessun log viene scritto da piu' di N ore
+;    grazia_minuti  (facoltativo, 20) tempo concesso allo script per scrivere il log dopo l'orario
+;    errori         (facoltativo) espressione regolare per le righe di errore di questo script
+;    ignora         (facoltativo) espressione regolare per righe da non contare (errori noti)
+;    non_pulire = 1 non toccare questi log nella pulizia
+;    fuso           (facoltativo) fuso orario delle date scritte nel log, se diverso da quello della PHP
+;                   da riga di comando (es. per script Python: fuso = UTC)
+; =====================================================================================
+
+[generale]
+base = /usr/local/bin/prosit
+stato = /srv/data/prosit/monitor/stato.json
+lizmap = /var/www/lizmap-web-client/lizmap
+url_lizmap = http://127.0.0.1/lizmap/index.php
+finestra_ore = 24
+; Lizmap: oltre questo numero di errori nelle 24 ore il riquadro diventa rosso (sotto e' giallo)
+lizmap_errori_allarme = 50
+dischi[] = /
+dischi[] = /srv/data
+disco_allarme_pct = 90
+; Pulizia dei log (php monitor.php --pulizia, una volta al giorno)
+conserva_giorni = 90
+comprimi_dopo_giorni = 7
+; file unici che crescono sempre (cron.log ecc.): copia compressa e svuotamento ogni N giorni o oltre N MB
+ruota_giorni = 30
+ruota_mb = 20
+; altri log da pulire (non controllati come script)
+pulizia_extra[] = /var/www/lizmap-web-client/lizmap/var/log/*.log
+pulizia_extra[] = /usr/local/bin/prosit/monitor/logs/*.log
+
+[mail]
+nome = "Invio mail dalla coda"
+log[] = "MAIL-SMTP-PostgreSQL__sender/logs/*/*/*/*.log"
+log[] = "MAIL-SMTP-PostgreSQL__sender/logs/*.log"
+cron = "MAIL-SMTP-PostgreSQL__sender"
+
+[twproject]
+nome = "Twproject (todo, stati, commenti)"
+log[] = "TWPROJECT-PostgreSQL-API-sync-pg2twprj/logs/*/*/*/*.log"
+log[] = "TWPROJECT-PostgreSQL-API-sync-pg2twprj/logs/cron/*.log"
+log[] = "TWPROJECT-PostgreSQL-API-sync-pg2twprj/logs/*.log"
+cron = "TWPROJECT-PostgreSQL-API-sync-pg2twprj"
+
+[imap]
+nome = "Lettura caselle mail (IMAP)"
+log[] = "IMAP-extract-body-mail2pg/logs/*/*.log"
+log[] = "IMAP-extract-body-mail2pg/logs/*.log"
+cron = "IMAP-extract-body-mail2pg"
+
+[rekla]
+nome = "Promemoria e report Rekla"
+log[] = "REKLA-notify__scheduler/Logs/*.txt"
+log[] = "REKLA-notify__scheduler/*.log"
+cron = "REKLA-notify__scheduler"
+
+[ckan]
+nome = "Open data (CKAN)"
+log[] = "CKAN-API-sync-sit2ckan/logs/*.log"
+cron = "CKAN-API-sync-sit2ckan"
+
+[anncsu]
+nome = "ANNCSU (civici PDND)"
+log[] = "ANNCSU-PostgreSQL-PDND-sync-main/logs/*.log"
+cron = "ANNCSU-PostgreSQL-PDND-sync-main"
+
+[execute]
+nome = "Pianificatore (EXECUTE)"
+; script Python: scrive le date nel fuso del sistema
+fuso = UTC
+log[] = "EXECUTE-schedulation-manager__scheduler/logs/*.txt"
+log[] = "EXECUTE-schedulation-manager__scheduler/logs/*.log"
+cron = "EXECUTE-schedulation-manager__scheduler"
+; il registro delle esecuzioni usa la parola ERRORE
+errori = "/\bERRORE\b|\[(ERROR|CRITICAL)\]|\bERROR\b|Traceback \(most recent|Fatal error/"
+
+[upsert]
+nome = "Sincronizzazione censimento (UPSERT)"
+log[] = "UPSERT-sync-db2pgsql__trigger/logs/*.log"
+cron = "UPSERT-sync-db2pgsql__trigger"
+
+[lizmap_sync]
+nome = "Utenti Lizmap verso PostgreSQL"
+log[] = "Lizmap-PostgreSQL-sync-sqlite2pg/logs/*.log"
+cron = "Lizmap-PostgreSQL-sync-sqlite2pg"
+
+[prosit]
+nome = "Prosit (API, schede, hook)"
+log[] = "/srv/data/prosit/log/*.log"
+; Prosit scrive le date in ora italiana (timezone di Prosit), il PHP da riga di comando in UTC
+fuso = Europe/Rome
+manuale = 1
+
+[monitor]
+nome = "Monitor (questo controllo e pulizia log)"
+log[] = "monitor/logs/*.log"
+cron = "monitor/monitor.php"
